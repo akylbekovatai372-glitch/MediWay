@@ -1,0 +1,5 @@
+'use client';
+import {MapContainer,TileLayer,Marker,Popup} from 'react-leaflet';import L from 'leaflet';import 'leaflet/dist/leaflet.css';import Link from 'next/link';import type {Facility} from '@/types';
+const icons:Record<string,string>={'Клиника':'#13a997','Больница':'#e47761','Поликлиника':'#5384dd','Диагностика':'#8768d6','Аптека':'#d69a32'};
+function icon(color:string){return L.divIcon({className:'map-pin-wrap',html:`<span style="background:${color}"></span>`,iconSize:[24,24],iconAnchor:[12,12]})}
+export default function MapView({items}:{items:Facility[]}){return <MapContainer center={[42.8746,74.5698]} zoom={12} scrollWheelZoom={false} className="map-view"><TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>{items.map(x=><Marker key={x.id} position={[x.lat,x.lng]} icon={icon(icons[x.category])}><Popup><b>{x.name}</b><br/>{x.category} · DEMO<br/><Link href={`/organizations/${x.id}`}>Открыть профиль →</Link></Popup></Marker>)}</MapContainer>}
